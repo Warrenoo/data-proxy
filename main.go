@@ -29,9 +29,11 @@ func main() {
 		fmt.Printf("Init: %s\n", url)
 	})
 
-	// 消息
-	message := getter.Data("{'isSubscribe':true,'market':'hk','stock_code':'00700','channel':'1,2,3'}")
+	// 消息1
+	message := getter.Data("{'isSubscribe':true,'market':'hk','stock_code':'','channel':'9'}")
 	fmt.Printf("Listen: %s\n", message)
+
+	counter := 0
 
 	// 发送一个消息，然后监听返回
 	client.OnListen(message, func() {
@@ -43,15 +45,15 @@ func main() {
 
 				// TODO 解析data
 
-				fmt.Printf("Receive: %s\n", data)
+				counter++
+				fmt.Printf("Receive(%d): %s\n", counter, data)
 				conn.Do("SET", "websock_test:"+time.Now().String(), data)
 
 			// 处理信号量
 			case s := <-signals:
 
-				fmt.Println("get signal:", s)
-
 				if s == syscall.SIGKILL || s == syscall.SIGINT {
+					fmt.Println("get signal:", s)
 					client.Done() <- true
 					return
 				}
@@ -59,7 +61,7 @@ func main() {
 		}
 	})
 
-	client.OnClose(func() {
+	defer client.OnClose(func() {
 		fmt.Printf("Close Server!!")
 	})
 }
