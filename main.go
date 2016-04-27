@@ -1,45 +1,26 @@
 package main
 
 import (
-	"github.com/Sirupsen/logrus"
-	"github.com/Sirupsen/logrus/formatters/logstash"
-	"github.com/garyburd/redigo/redis"
+	"fmt"
 	"github.com/warrenoo/getter"
-	"os"
-	"os/signal"
+	"gitlab.caishuo.com/ruby/go-data-client/analysis"
+	"gitlab.caishuo.com/ruby/go-data-client/libs"
 	"syscall"
 	"time"
 )
 
-func init_log() *logrus.Logger {
-	log := logrus.New()
-
-	log.Out = os.Stderr
-	log.Level = logrus.InfoLevel
-
-	// 输出logstash格式
-	// 通过hook可以直接发送到logstash服务
-	log.Formatter = &logstash.LogstashFormatter{Type: "go-data-client"}
-
-	return log
-}
-
-func init_redis() redis.Conn {
-	conn, _ := redis.DialTimeout("tcp", "192.168.99.100:6379", 0, 1*time.Second, 1*time.Second)
-	return conn
-}
-
 func main() {
 
+	fmt.Printf("Start Worker......")
+
 	// 初始化redis连接
-	conn := init_redis()
+	conn := libs.InitRedis()
 
-	// log 初始化
-	log := init_log()
+	// 初始化log
+	log := libs.InitLog()
 
-	// 信号处理
-	signals := make(chan os.Signal)
-	signal.Notify(signals)
+	// 注册接收信号channel
+	signals := libs.RegisterSignal()
 
 	var url string = "d.caishuo.com:6090"
 	var path string = "/websocket"
@@ -51,12 +32,11 @@ func main() {
 		log.Info("Init: ", url+path)
 	})
 
-	// 消息1
+	// 消息
 	message := []byte("{'isSubscribe':true,'market':'hk','stock_code':'','channel':'9'}")
 	log.Info("Listen: ", string(message))
 
 	counter := 0
-
 	// 发送一个消息，然后监听返回
 	client.OnListen(message, func() {
 		for {
@@ -66,10 +46,14 @@ func main() {
 			case data := <-client.Ch():
 
 				// TODO 解析data
+				stock := analysis.Make1(data)
+				if stock == nil {
+					continue
+				}
 
 				counter++
-				log.Info("Receive(", counter, "): ", data)
-				conn.Do("SET", "websock_test:"+time.Now().String(), data)
+				log.Info("Receive(", counter, "): ", stock)
+				conn.Do("SET", "websock_test:"+time.Now().String(), stock.SaveFormat())
 
 			// 处理信号量
 			case s := <-signals:
