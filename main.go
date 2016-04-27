@@ -19,18 +19,18 @@ func main() {
 	signals := make(chan os.Signal)
 	signal.Notify(signals)
 
-	var origin string = "http://douniwan.com"
-	var url string = "ws://d.caishuo.com:6090/websocket"
+	var url string = "d.caishuo.com:6090"
+	var path string = "/websocket"
 
-	client := getter.New(origin, url, "")
+	client := getter.New(url, path)
 
 	// 连接websocket
-	client.OnConnect(func() {
+	client.OnOpen(func() {
 		fmt.Printf("Init: %s\n", url)
 	})
 
 	// 消息1
-	message := getter.Data("{'isSubscribe':true,'market':'hk','stock_code':'','channel':'9'}")
+	message := []byte("{'isSubscribe':true,'market':'hk','stock_code':'','channel':'9'}")
 	fmt.Printf("Listen: %s\n", message)
 
 	counter := 0
@@ -46,6 +46,7 @@ func main() {
 				// TODO 解析data
 
 				counter++
+				fmt.Printf("pid: %d\n", os.Getpid())
 				fmt.Printf("Receive(%d): %s\n", counter, data)
 				conn.Do("SET", "websock_test:"+time.Now().String(), data)
 
