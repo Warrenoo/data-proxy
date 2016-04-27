@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"github.com/Sirupsen/logrus"
+	"github.com/Sirupsen/logrus/formatters/logstash"
 	"github.com/garyburd/redigo/redis"
 	"github.com/warrenoo/getter"
 	"os"
@@ -10,10 +11,31 @@ import (
 	"time"
 )
 
+func init_log() *logrus.Logger {
+	log := logrus.New()
+
+	log.Out = os.Stderr
+	log.Level = logrus.InfoLevel
+
+	// 输出logstash格式
+	// 通过hook可以直接发送到logstash服务
+	log.Formatter = &logstash.LogstashFormatter{Type: "go-data-client"}
+
+	return log
+}
+
+func init_redis() redis.Conn {
+	conn, _ := redis.DialTimeout("tcp", "192.168.99.100:6379", 0, 1*time.Second, 1*time.Second)
+	return conn
+}
+
 func main() {
 
 	// 初始化redis连接
-	conn, _ := redis.DialTimeout("tcp", "192.168.99.100:6379", 0, 1*time.Second, 1*time.Second)
+	conn := init_redis()
+
+	// log 初始化
+	log := init_log()
 
 	// 信号处理
 	signals := make(chan os.Signal)
@@ -26,12 +48,12 @@ func main() {
 
 	// 连接websocket
 	client.OnOpen(func() {
-		fmt.Printf("Init: %s\n", url)
+		log.Info("Init: ", url+path)
 	})
 
 	// 消息1
 	message := []byte("{'isSubscribe':true,'market':'hk','stock_code':'','channel':'9'}")
-	fmt.Printf("Listen: %s\n", message)
+	log.Info("Listen: ", string(message))
 
 	counter := 0
 
@@ -46,15 +68,14 @@ func main() {
 				// TODO 解析data
 
 				counter++
-				fmt.Printf("pid: %d\n", os.Getpid())
-				fmt.Printf("Receive(%d): %s\n", counter, data)
+				log.Info("Receive(", counter, "): ", data)
 				conn.Do("SET", "websock_test:"+time.Now().String(), data)
 
 			// 处理信号量
 			case s := <-signals:
 
 				if s == syscall.SIGKILL || s == syscall.SIGINT {
-					fmt.Println("get signal:", s)
+					log.Info("get signal: ", s)
 					client.Done() <- true
 					return
 				}
@@ -63,6 +84,6 @@ func main() {
 	})
 
 	defer client.OnClose(func() {
-		fmt.Printf("Close Server!!")
+		log.Info("Close Server!!")
 	})
 }
