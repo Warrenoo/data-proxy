@@ -14,7 +14,8 @@ func main() {
 	fmt.Printf("Start Worker......\n")
 
 	// 命令行参数解析
-	ws_host, ws_path, redis_host, redis_port := libs.ParseCommond()
+	ws_host, ws_path, redis_host, redis_port := libs.GetEnv()
+	fmt.Printf("command: ws_host=%s, ws_path=%s, redis_host=%s, redis_port=%s\n", ws_host, ws_path, redis_host, redis_port)
 
 	// 初始化redis连接
 	conn := libs.InitRedis(redis_host, redis_port)
