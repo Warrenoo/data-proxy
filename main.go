@@ -49,13 +49,13 @@ func main() {
 			case data := <-client.Ch():
 
 				// TODO 解析data
-				stock := analysis.Make1(data)
+				stock := analysis.Make1(data.Data())
 				if stock == nil {
 					continue
 				}
 
 				counter++
-				log.Info("Receive(", counter, "): ", stock)
+				log.Info("Receive(", counter, "): ", stock, "cost_time: ", time.Now().Sub(data.St()))
 				conn.Do("SET", "websock_test:"+time.Now().String(), stock.SaveFormat())
 
 			// 处理信号量
