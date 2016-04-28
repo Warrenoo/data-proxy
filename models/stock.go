@@ -21,6 +21,7 @@ type Stock struct {
 	Sell1Num        string
 	Week52High      string
 	Week52Low       string
+	Amount          string
 	TodayOpen       string
 	LastClose       string
 }
