@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func InitRedis() redis.Conn {
-	conn, _ := redis.DialTimeout("tcp", "192.168.99.100:6379", 0, 1*time.Second, 1*time.Second)
+func InitRedis(redis_host string, redis_port string) redis.Conn {
+	conn, _ := redis.DialTimeout("tcp", redis_host+":"+redis_port, 0, 1*time.Second, 1*time.Second)
 	return conn
 }

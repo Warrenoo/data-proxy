@@ -11,10 +11,13 @@ import (
 
 func main() {
 
-	fmt.Printf("Start Worker......")
+	fmt.Printf("Start Worker......\n")
+
+	// 命令行参数解析
+	ws_host, ws_path, redis_host, redis_port := libs.ParseCommond()
 
 	// 初始化redis连接
-	conn := libs.InitRedis()
+	conn := libs.InitRedis(redis_host, redis_port)
 
 	// 初始化log
 	log := libs.InitLog()
@@ -22,8 +25,8 @@ func main() {
 	// 注册接收信号channel
 	signals := libs.RegisterSignal()
 
-	var url string = "d.caishuo.com:6090"
-	var path string = "/websocket"
+	var url string = ws_host
+	var path string = ws_path
 
 	client := getter.New(url, path)
 
