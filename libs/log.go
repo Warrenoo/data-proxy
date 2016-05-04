@@ -4,10 +4,11 @@ import (
 	//"fmt"
 	"github.com/Sirupsen/logrus"
 	"github.com/Sirupsen/logrus/formatters/logstash"
+	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"os"
 )
 
-func InitLog() *logrus.Logger {
+func InitLog() {
 	log := logrus.New()
 
 	// log to a file
@@ -26,5 +27,5 @@ func InitLog() *logrus.Logger {
 	// 通过hook可以直接发送到logstash服务
 	log.Formatter = &logstash.LogstashFormatter{Type: "go-data-client"}
 
-	return log
+	SetLogger(log)
 }

@@ -1,12 +1,14 @@
 package libs
 
 import (
+	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"os"
 	"os/signal"
 )
 
-func RegisterSignal() chan os.Signal {
+func RegisterSignal() {
 	signals := make(chan os.Signal)
 	signal.Notify(signals)
-	return signals
+
+	SetSignals(signals)
 }
