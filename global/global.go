@@ -7,10 +7,14 @@ import (
 )
 
 var (
-	ws_host, ws_path, redis_host, redis_port string
-	redis_conn                               redis.Conn
-	logger                                   *log.Logger
-	signals                                  chan os.Signal
+	redis_conn       redis.Conn
+	logger           *log.Logger
+	signals          chan os.Signal
+	ws_host          string
+	ws_path          string
+	redis_host       string
+	redis_port       string
+	http_server_port string
 )
 
 func SetWsHost(wh string) {
@@ -27,6 +31,10 @@ func SetRedisHost(rh string) {
 
 func SetRedisPort(rp string) {
 	redis_port = rp
+}
+
+func SetHttpServerPort(hsp string) {
+	http_server_port = hsp
 }
 
 func SetRedisConn(c redis.Conn) {
@@ -67,4 +75,8 @@ func RedisHost() string {
 
 func RedisPort() string {
 	return redis_port
+}
+
+func HttpServerPort() string {
+	return http_server_port
 }

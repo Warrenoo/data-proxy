@@ -3,10 +3,10 @@ package analysis
 import (
 	"errors"
 	"fmt"
+	"github.com/garyburd/redigo/redis"
 	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"gitlab.caishuo.com/ruby/go-data-client/models"
 	"strings"
-	"time"
 )
 
 func AnalysisChannel1(data string) ([]string, error) {
@@ -36,6 +36,8 @@ func StockPersistence(data string) *models.Stock {
 	if stock == nil {
 		return nil
 	}
-	RedisConn().Do("SET", "websock_test:"+time.Now().String(), stock.SaveFormat())
+
+	RedisConn().Do("HMSET", redis.Args{}.Add("realtime:"+(*stock).Symbol).AddFlat(stock)...)
+
 	return stock
 }
