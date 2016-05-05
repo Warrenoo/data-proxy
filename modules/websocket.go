@@ -43,9 +43,8 @@ func StartWebSocket() {
 			// 处理信号量
 			case s := <-Signals():
 
-				if s == syscall.SIGKILL || s == syscall.SIGINT {
+				if s == syscall.SIGINT {
 					Logger().Info("Get Signal: ", s)
-					client.Done() <- true
 					return
 				}
 			}
@@ -53,7 +52,11 @@ func StartWebSocket() {
 	})
 
 	defer client.OnClose(func() {
-		fmt.Printf("Close Server!!\n")
+		fmt.Printf("Close Redis...\n")
+		RedisConn().Close()
+		fmt.Printf("Close LogFile...\n")
+		LogFile().Close()
+		fmt.Printf("Close Server Over!!\n")
 	})
 
 }

@@ -18,6 +18,7 @@ func InitLog() {
 	} else {
 		// log to file
 		log.Out = f
+		SetLogFile(f)
 	}
 
 	log.Level = logrus.InfoLevel

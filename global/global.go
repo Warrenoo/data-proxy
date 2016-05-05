@@ -10,6 +10,7 @@ var (
 	redis_conn       redis.Conn
 	objects          chan interface{}
 	logger           *log.Logger
+	log_file         *os.File
 	signals          chan os.Signal
 	ws_host          string
 	ws_path          string
@@ -20,6 +21,10 @@ var (
 
 func SetObjects(o chan interface{}) {
 	objects = o
+}
+
+func SetLogFile(f *os.File) {
+	log_file = f
 }
 
 func SetWsHost(wh string) {
@@ -88,4 +93,8 @@ func HttpServerPort() string {
 
 func Objects() chan interface{} {
 	return objects
+}
+
+func LogFile() *os.File {
+	return log_file
 }
