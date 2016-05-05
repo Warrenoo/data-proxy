@@ -2,23 +2,23 @@ package main
 
 import (
 	"fmt"
-	"gitlab.caishuo.com/ruby/go-data-client/libs"
-	"gitlab.caishuo.com/ruby/go-data-client/modules"
-	"gitlab.caishuo.com/ruby/go-data-client/modules/http"
+	. "gitlab.caishuo.com/ruby/go-data-client/libs"
+	. "gitlab.caishuo.com/ruby/go-data-client/modules"
+	. "gitlab.caishuo.com/ruby/go-data-client/modules/http"
 )
 
 func initConfig() {
 	// 命令行参数解析
-	libs.GetEnv()
+	GetEnv()
 
 	// 初始化redis连接
-	libs.InitRedis()
+	InitRedis()
 
 	// 初始化log
-	libs.InitLog()
+	InitLog()
 
 	// 注册接收信号channel
-	libs.RegisterSignal()
+	RegisterSignal()
 }
 
 func main() {
@@ -27,11 +27,13 @@ func main() {
 
 	initConfig()
 
-	go http.InitData()
+	// 开启web服务
+	go StartWebServer()
 
-	go http.BeginWebServer()
+	// 初始化数据
+	go InitData()
 
-	// 开始websockst数据监听
-	modules.BeginWebSocket()
+	// 开始websockst数据阻塞式监听
+	StartWebSocket()
 
 }

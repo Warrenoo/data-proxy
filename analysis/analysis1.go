@@ -2,8 +2,6 @@ package analysis
 
 import (
 	"errors"
-	"fmt"
-	"github.com/garyburd/redigo/redis"
 	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"gitlab.caishuo.com/ruby/go-data-client/models"
 	"strings"
@@ -24,7 +22,7 @@ func Make1(data string) *models.Stock {
 	result, err := AnalysisChannel1(data)
 
 	if err != nil {
-		fmt.Printf(err.Error())
+		Logger().Error(err)
 		return nil
 	}
 
@@ -33,11 +31,13 @@ func Make1(data string) *models.Stock {
 
 func StockPersistence(data string) *models.Stock {
 	stock := Make1(data)
+
 	if stock == nil {
+		Logger().Error("stock make fail..., from data: ", data)
 		return nil
 	}
 
-	RedisConn().Do("HMSET", redis.Args{}.Add("realtime:"+(*stock).Symbol).AddFlat(stock)...)
+	Objects() <- stock
 
 	return stock
 }

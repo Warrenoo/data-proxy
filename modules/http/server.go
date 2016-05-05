@@ -19,7 +19,7 @@ func resend(c web.C, w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "已经开始同步全部股票数据!")
 }
 
-func BeginWebServer() {
+func StartWebServer() {
 	os.Setenv("PORT", HttpServerPort())
 	goji.Get("/info", info)
 	goji.Post("/resend", resend)

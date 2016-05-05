@@ -1,7 +1,7 @@
 package libs
 
 import (
-	//"fmt"
+	"fmt"
 	"github.com/Sirupsen/logrus"
 	"github.com/Sirupsen/logrus/formatters/logstash"
 	. "gitlab.caishuo.com/ruby/go-data-client/global"
@@ -11,15 +11,14 @@ import (
 func InitLog() {
 	log := logrus.New()
 
-	// log to a file
-	//f, err := os.OpenFile("testlogrus.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
-	//if err != nil {
-	//fmt.Printf("error opening file: %v", err)
-	//}
-	//log.Out = f
-
-	// log to 标准输出
-	log.Out = os.Stderr
+	if f, err := os.OpenFile("go-data-client.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666); err != nil {
+		fmt.Printf("opening file error: %v\n", err)
+		// log to 标准输出
+		log.Out = os.Stderr
+	} else {
+		// log to file
+		log.Out = f
+	}
 
 	log.Level = logrus.InfoLevel
 
@@ -28,4 +27,6 @@ func InitLog() {
 	log.Formatter = &logstash.LogstashFormatter{Type: "go-data-client"}
 
 	SetLogger(log)
+
+	fmt.Printf("Init Log Ok\n")
 }

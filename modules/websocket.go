@@ -9,7 +9,8 @@ import (
 	"time"
 )
 
-func BeginWebSocket() {
+func StartWebSocket() {
+	fmt.Printf("Init WebSocket...\n")
 	client := getter.New(WsHost(), WsPath())
 
 	// 连接websocket
@@ -20,9 +21,9 @@ func BeginWebSocket() {
 	// 消息
 	var messages = []string{
 		"{'isSubscribe':true,'market':'hk','stock_code':'','channel':'9'}",
-		//"{'isSubscribe':true,'market':'sh','stock_code':'','channel':'9'}",
-		//"{'isSubscribe':true,'market':'sz','stock_code':'','channel':'9'}",
-		//"{'isSubscribe':true,'market':'us','stock_code':'','channel':'9'}",
+		"{'isSubscribe':true,'market':'sh','stock_code':'','channel':'9'}",
+		"{'isSubscribe':true,'market':'sz','stock_code':'','channel':'9'}",
+		"{'isSubscribe':true,'market':'us','stock_code':'','channel':'9'}",
 	}
 
 	// 发送一个消息，然后监听返回
@@ -32,18 +33,18 @@ func BeginWebSocket() {
 
 			// 处理返回结果
 			case data := <-client.Ch():
-				stock := analysis.StockPersistence(data.Data())
-				if stock == nil {
-					continue
-				}
 
-				Logger().Info("Receive: ", &stock, ", cost_time: ", time.Now().Sub(data.St()))
+				if stock := analysis.StockPersistence(data.Data()); stock == nil {
+					continue
+				} else {
+					Logger().Info("Receive: ", stock, ", cost_time: ", time.Now().Sub(data.St()))
+				}
 
 			// 处理信号量
 			case s := <-Signals():
 
 				if s == syscall.SIGKILL || s == syscall.SIGINT {
-					fmt.Printf("get signal: %s\n", s)
+					Logger().Info("Get Signal: ", s)
 					client.Done() <- true
 					return
 				}

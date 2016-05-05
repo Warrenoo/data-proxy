@@ -16,7 +16,8 @@ func GetEnv() {
 	SetRedisPort(andEqual(redis_port, redis_port_tmp))
 	SetHttpServerPort(andEqual(http_server_port, http_server_port_tmp))
 
-	fmt.Printf("commands: ws_host=%s, ws_path=%s, redis_host=%s, redis_port=%s, http_server_port=%s\n", WsHost(), WsPath(), RedisHost(), RedisPort(), HttpServerPort())
+	fmt.Printf("Init Commands Ok\n")
+	fmt.Printf("Commands: ws_host=%s, ws_path=%s, redis_host=%s, redis_port=%s, http_server_port=%s\n", WsHost(), WsPath(), RedisHost(), RedisPort(), HttpServerPort())
 }
 
 func andEqual(s1 string, s2 string) string {

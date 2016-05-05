@@ -8,6 +8,7 @@ import (
 
 var (
 	redis_conn       redis.Conn
+	objects          chan interface{}
 	logger           *log.Logger
 	signals          chan os.Signal
 	ws_host          string
@@ -16,6 +17,10 @@ var (
 	redis_port       string
 	http_server_port string
 )
+
+func SetObjects(o chan interface{}) {
+	objects = o
+}
 
 func SetWsHost(wh string) {
 	ws_host = wh
@@ -79,4 +84,8 @@ func RedisPort() string {
 
 func HttpServerPort() string {
 	return http_server_port
+}
+
+func Objects() chan interface{} {
+	return objects
 }
