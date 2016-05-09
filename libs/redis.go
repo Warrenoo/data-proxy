@@ -22,7 +22,7 @@ func InitRedis() {
 	fmt.Printf("Init Redis Ok\n")
 
 	go redisWrite()
-	fmt.Printf("RedisWrite Running...")
+	fmt.Printf("RedisWrite Running...\n")
 }
 
 func redisWrite() {
@@ -40,6 +40,11 @@ func redisWrite() {
 
 			}
 
+		case <-CloseFlag():
+			CloseFlag() <- true
+			RedisConn().Close()
+			fmt.Printf("Redis Conn Closed!\n")
+			return
 		}
 	}
 }

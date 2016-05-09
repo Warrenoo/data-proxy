@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	. "gitlab.caishuo.com/ruby/go-data-client/libs"
-	. "gitlab.caishuo.com/ruby/go-data-client/modules"
 	. "gitlab.caishuo.com/ruby/go-data-client/modules/http"
+	. "gitlab.caishuo.com/ruby/go-data-client/modules/websocket"
 )
 
 func initConfig() {
@@ -31,9 +31,12 @@ func main() {
 	go StartWebServer()
 
 	// 初始化数据
-	go InitData()
+	InitData()
 
-	// 开始websockst数据阻塞式监听
-	StartWebSocket()
+	// 开始websocket监听
+	//go StartBaseStock()
+	go StartRealtime()
 
+	// 阻塞监听信号
+	ListenSignal()
 }

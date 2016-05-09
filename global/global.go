@@ -12,12 +12,29 @@ var (
 	logger           *log.Logger
 	log_file         *os.File
 	signals          chan os.Signal
+	close_flag       chan bool
+	ids_map          map[string]string
 	ws_host          string
 	ws_path          string
 	redis_host       string
 	redis_port       string
 	http_server_port string
 )
+
+func CloseAll() {
+	close(signals)
+	close(close_flag)
+	close(objects)
+	log_file.Close()
+}
+
+func SetCloseFlag(cf chan bool) {
+	close_flag = cf
+}
+
+func SetIdsMap(im map[string]string) {
+	ids_map = im
+}
 
 func SetObjects(o chan interface{}) {
 	objects = o
@@ -97,4 +114,12 @@ func Objects() chan interface{} {
 
 func LogFile() *os.File {
 	return log_file
+}
+
+func IdsMap() map[string]string {
+	return ids_map
+}
+
+func CloseFlag() chan bool {
+	return close_flag
 }

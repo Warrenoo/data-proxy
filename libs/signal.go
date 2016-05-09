@@ -5,6 +5,8 @@ import (
 	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"os"
 	"os/signal"
+	"syscall"
+	"time"
 )
 
 func RegisterSignal() {
@@ -13,5 +15,31 @@ func RegisterSignal() {
 	signal.Notify(signals)
 
 	SetSignals(signals)
+
+	close_flag := make(chan bool, 5)
+	SetCloseFlag(close_flag)
+
 	fmt.Printf("Init Signal Ok\n")
+}
+
+func ListenSignal() {
+	for {
+		select {
+		// 处理信号量
+		case s := <-Signals():
+			if s == syscall.SIGINT {
+				Logger().Info("Get Signal: ", s)
+				CloseFlag() <- true
+			}
+		case <-CloseFlag():
+			CloseFlag() <- true
+			// 阻塞1秒钟用来让其他线程结束
+			time.Sleep(1 * time.Second)
+
+			CloseAll()
+
+			fmt.Print("Server Over!!\n")
+			return
+		}
+	}
 }
