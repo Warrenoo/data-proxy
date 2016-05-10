@@ -22,6 +22,13 @@ type Stock struct {
 	Amount          string `redis:"total_value_trade"`
 	TodayOpen       string `redis:"open"`
 	LastClose       string `redis:"previous_close"`
+	Id              string `redis:"id"`
+	Naps            string `redis:"naps"`
+	Eps             string `redis:"eps"`
+	Exchange        string `redis:"exchange"`
+	Amplitude       string `redis:"amplitude"`
+	TopPrice        string `redis:"top_price"`
+	BottomPrice     string `redis:"bottom_price"`
 }
 
 func (this *Stock) SaveFormat() *map[string]string {

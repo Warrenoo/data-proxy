@@ -8,11 +8,10 @@ import (
 )
 
 func analysisBaseStock(data string) ([]string, error) {
-	str := strings.Replace(data, "|", ",", 1)
-	str_arr := strings.Split(str, ",")
+	str_arr := strings.Split(data, "~")
 
-	if len(str_arr) != 19 {
-		return nil, errors.New("data size must be 19\n")
+	if len(str_arr) != 5 {
+		return nil, errors.New("data size must be 5\n")
 	}
 
 	return str_arr, nil
@@ -26,11 +25,13 @@ func makeBaseStock(data string) *models.Stock {
 		return nil
 	}
 
-	return &models.Stock{result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15], result[16], result[17], result[18]}
+	return &models.Stock{Symbol: result[0], Id: result[1], Exchange: result[2], Naps: result[3], Eps: result[4]}
 }
 
 func BaseStockPersistence(data string) *models.Stock {
 	stock := makeBaseStock(data)
+
+	mapSymbolAndId(stock)
 
 	if stock == nil {
 		Logger().Error("stock make fail..., from data: ", data)
@@ -40,4 +41,8 @@ func BaseStockPersistence(data string) *models.Stock {
 	Objects() <- stock
 
 	return stock
+}
+
+func mapSymbolAndId(stock *models.Stock) {
+	IdsMap()[stock.Symbol] = stock.Id
 }

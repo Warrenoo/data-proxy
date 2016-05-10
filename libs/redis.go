@@ -34,7 +34,7 @@ func redisWrite() {
 			case *models.Stock:
 
 				stock := o.(*models.Stock)
-				if _, err := RedisConn().Do("HMSET", redis.Args{}.Add("realtime:"+stock.Symbol).AddFlat(stock)...); err != nil {
+				if _, err := RedisConn().Do("HMSET", redis.Args{}.Add("realtime:"+stock.Id).AddFlat(stock)...); err != nil {
 					Logger().Error("Redis Error: ", err)
 				}
 
@@ -42,6 +42,7 @@ func redisWrite() {
 
 		case <-CloseFlag():
 			CloseFlag() <- true
+
 			RedisConn().Close()
 			fmt.Printf("Redis Conn Closed!\n")
 			return

@@ -14,10 +14,6 @@ func StartWebSocket(host string, path string, messages []string, listen_hook fun
 		Logger().Info("Connect WebSocket: ", host+path)
 	})
 
-	defer client.OnClose(func(this *getter.Client) {
-		Logger().Info("WebSocket ", host+path, " Closed!")
-	})
-
 	// 发送一个消息，然后监听返回
 	client.OnListen(&messages, func(client *getter.Client) {
 		for {
@@ -34,9 +30,15 @@ func StartWebSocket(host string, path string, messages []string, listen_hook fun
 			case <-CloseFlag():
 				CloseFlag() <- true
 				client.Done() <- true
+
+				time.Sleep(1 * time.Second)
 				return
 			}
 		}
 
+	})
+
+	defer client.OnClose(func(this *getter.Client) {
+		Logger().Info("WebSocket ", host+path, " Closed!")
 	})
 }

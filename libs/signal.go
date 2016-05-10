@@ -30,16 +30,15 @@ func ListenSignal() {
 			if s == syscall.SIGINT {
 				Logger().Info("Get Signal: ", s)
 				CloseFlag() <- true
+
+				// 阻塞1秒钟用来让其他线程结束
+				time.Sleep(2 * time.Second)
+
+				CloseAll()
+
+				fmt.Print("Server Over!!\n")
+				return
 			}
-		case <-CloseFlag():
-			CloseFlag() <- true
-			// 阻塞1秒钟用来让其他线程结束
-			time.Sleep(1 * time.Second)
-
-			CloseAll()
-
-			fmt.Print("Server Over!!\n")
-			return
 		}
 	}
 }
