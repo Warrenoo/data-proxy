@@ -11,8 +11,8 @@ func analysisRealTimeStock(data string) ([]string, error) {
 	str := strings.Replace(data, "|", ",", 1)
 	str_arr := strings.Split(str, ",")
 
-	if len(str_arr) != 22 {
-		return nil, errors.New("data size must be 22\n")
+	if len(str_arr) >= 22 {
+		return nil, errors.New("data size must >= 22\n")
 	}
 
 	return str_arr, nil
