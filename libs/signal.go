@@ -31,7 +31,7 @@ func ListenSignal() {
 				Logger().Info("Get Signal: ", s)
 				CloseFlag() <- true
 
-				// 阻塞1秒钟用来让其他线程结束
+				// 阻塞2秒钟用来让其他线程结束
 				time.Sleep(2 * time.Second)
 
 				CloseAll()
