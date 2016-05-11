@@ -18,7 +18,7 @@ func InitLog() {
 	} else {
 		// log to file
 		log.Out = f
-		SetLogFile(f)
+		LogFile = f
 	}
 
 	log.Level = logrus.InfoLevel
@@ -27,7 +27,7 @@ func InitLog() {
 	// 通过hook可以直接发送到logstash服务
 	log.Formatter = &logstash.LogstashFormatter{Type: "go-data-client"}
 
-	SetLogger(log)
+	Logger = log
 
 	fmt.Printf("Init Log Ok\n")
 }

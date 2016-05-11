@@ -7,22 +7,42 @@ import (
 	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"net/http"
 	"os"
+	"syscall"
 )
 
 func info(c web.C, w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "GO Data CLIENT running......\n")
-	fmt.Fprintf(w, "commands: ws_host=%s, ws_path=%s, redis_host=%s, redis_port=%s, http_server_port=%s\n", WsHost(), WsPath(), RedisHost(), RedisPort(), HttpServerPort())
+	fmt.Fprintf(w, "GO Data CLIENT running......(pid: %d)\n", syscall.Getpid())
+	fmt.Fprintf(w, "Commands: ws_host=%s, ws_path=%s, redis_host=%s, redis_port=%s, http_server_port=%s\n", WsHost, WsPath, RedisHost, RedisPort, HttpServerPort)
+
+	fmt.Fprintf(w, "-------------------统计数据------------------\n")
+	for key, value := range Statistics {
+		fmt.Fprintf(w, "- %s:\n", key)
+		for k, v := range value {
+			fmt.Fprintf(w, "-- %s: %s\n", k, v)
+		}
+	}
 }
 
 func resend(c web.C, w http.ResponseWriter, r *http.Request) {
-	go InitData()
-	fmt.Fprintf(w, "已经开始同步全部股票数据!")
+
+	market := c.URLParams["market"]
+	go InitDataByMarkets([]string{market})
+
+	fmt.Fprintf(w, "已经开始同步%s市场股票数据!", market)
+}
+
+func stock_id(c web.C, w http.ResponseWriter, r *http.Request) {
+
+	symbol := c.URLParams["symbol"]
+
+	fmt.Fprintf(w, "Symbol: %s ----> Id: %s", symbol, IdsMap[symbol])
 }
 
 func StartWebServer() {
-	os.Setenv("PORT", HttpServerPort())
+	os.Setenv("PORT", HttpServerPort)
 	goji.Get("/info", info)
-	goji.Post("/resend", resend)
+	goji.Get("/resend/:market", resend)
+	goji.Get("/stock_id/:symbol", stock_id)
 
 	goji.Serve()
 }

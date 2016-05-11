@@ -12,12 +12,11 @@ func realTimeHook(data string) interface{} {
 func StartRealtime() {
 
 	// 消息
-	var messages = []string{
-		"{'isSubscribe':true,'market':'hk','stock_code':'','channel':'9'}",
-		"{'isSubscribe':true,'market':'sh','stock_code':'','channel':'9'}",
-		"{'isSubscribe':true,'market':'sz','stock_code':'','channel':'9'}",
-		"{'isSubscribe':true,'market':'us','stock_code':'','channel':'9'}",
+	messages := make([]string, len(Markets))
+
+	for i, m := range Markets {
+		messages[i] = "{'isSubscribe':true,'market':'" + m + "','stock_code':'','channel':'9'}"
 	}
 
-	StartWebSocket(WsHost(), WsPath(), messages, realTimeHook)
+	StartWebSocket(WsHost, WsPath, messages, realTimeHook)
 }

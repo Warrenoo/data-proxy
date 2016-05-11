@@ -5,6 +5,7 @@ import (
 	. "gitlab.caishuo.com/ruby/go-data-client/libs"
 	. "gitlab.caishuo.com/ruby/go-data-client/modules/http"
 	. "gitlab.caishuo.com/ruby/go-data-client/modules/websocket"
+	. "gitlab.caishuo.com/ruby/go-data-client/statistics"
 )
 
 func initConfig() {
@@ -19,6 +20,9 @@ func initConfig() {
 
 	// 注册接收信号channel
 	RegisterSignal()
+
+	// 初始化统计信息
+	InitStatistics()
 }
 
 func main() {

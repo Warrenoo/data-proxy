@@ -11,14 +11,23 @@ import (
 )
 
 func InitData() {
-	//InitBaseStock()
-	InitRealTime()
+	for _, m := range Markets {
+		//InitBaseStock(m)
+		InitRealTime(m)
+	}
 }
 
-func InitRealTime() {
-	Logger().Info("Init RealTime Begin!!")
-	fmt.Printf("Init RealTime...\n")
-	response_body := httpPost("http://d.caishuo.com:6090/websocket", "text/plain; charset=UTF-8", "{'channel':'9'}")
+func InitDataByMarkets(markets []string) {
+	for _, m := range markets {
+		//InitBaseStock(m)
+		InitRealTime(m)
+	}
+}
+
+func InitRealTime(market string) {
+	Logger.Info("Init RealTime " + market + " Begin!!")
+	fmt.Printf("Init RealTime %s...\n", market)
+	response_body := httpPost("http://d.caishuo.com:6090/websocket", "text/plain; charset=UTF-8", "{'channel':'9', 'market':'"+market+"'}")
 
 	s := []string{}
 	parseJson([]byte(response_body), &s)
@@ -27,14 +36,14 @@ func InitRealTime() {
 		analysis.RealTimeStockPersistence(v)
 	}
 
-	fmt.Printf("Init RealTime Ok\n")
-	Logger().Info("Init RealTime Over!!")
+	fmt.Printf("Init RealTime %s Ok\n", market)
+	Logger.Info("Init RealTime " + market + " Over!!")
 }
 
-func InitBaseStock() {
-	Logger().Info("Init BaseStock Begin!!")
-	fmt.Printf("Init BaseStock...\n")
-	response_body := httpPost("http://d.caishuo.com:6090/websocket", "text/plain; charset=UTF-8", "{'channel':'9'}")
+func InitBaseStock(market string) {
+	Logger.Info("Init BaseStock " + market + " Begin!!")
+	fmt.Printf("Init BaseStock %s...\n", market)
+	response_body := httpPost("http://d.caishuo.com:6090/websocket", "text/plain; charset=UTF-8", "{'channel':'9', 'market':'"+market+"'}")
 
 	s := []string{}
 	parseJson([]byte(response_body), &s)
@@ -43,8 +52,8 @@ func InitBaseStock() {
 		analysis.BaseStockPersistence(v)
 	}
 
-	fmt.Printf("Init BaseStock Ok\n")
-	Logger().Info("Init BaseStock Over!!")
+	fmt.Printf("Init BaseStock %s Ok\n", market)
+	Logger.Info("Init BaseStock " + market + " Over!!")
 }
 
 func parseJson(data []byte, s *[]string) {
@@ -55,7 +64,7 @@ func httpPost(host string, request_type string, message string) string {
 	resp, err := http.Post(host, request_type, strings.NewReader(message))
 
 	if err != nil {
-		Logger().Error(err)
+		Logger.Error(err)
 	}
 
 	defer resp.Body.Close()
@@ -63,7 +72,7 @@ func httpPost(host string, request_type string, message string) string {
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		Logger().Error(err)
+		Logger.Error(err)
 	}
 
 	return string(body)

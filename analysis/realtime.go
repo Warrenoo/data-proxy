@@ -4,14 +4,16 @@ import (
 	"errors"
 	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"gitlab.caishuo.com/ruby/go-data-client/models"
+	"gitlab.caishuo.com/ruby/go-data-client/statistics"
 	"strings"
 )
 
 func analysisRealTimeStock(data string) ([]string, error) {
+
 	str := strings.Replace(data, "|", ",", 1)
 	str_arr := strings.Split(str, ",")
 
-	if len(str_arr) >= 22 {
+	if len(str_arr) < 22 {
 		return nil, errors.New("data size must >= 22\n")
 	}
 
@@ -22,7 +24,7 @@ func makeRealTimeStock(data string) *models.Stock {
 	result, err := analysisRealTimeStock(data)
 
 	if err != nil {
-		Logger().Error(err)
+		Logger.Error(err)
 		return nil
 	}
 
@@ -51,7 +53,7 @@ func makeRealTimeStock(data string) *models.Stock {
 		BottomPrice:     result[21],
 	}
 
-	id := IdsMap()[stock.Symbol]
+	id := IdsMap[stock.Symbol]
 
 	if id != "" {
 		stock.Id = id
@@ -67,11 +69,12 @@ func RealTimeStockPersistence(data string) *models.Stock {
 	stock := makeRealTimeStock(data)
 
 	if stock == nil {
-		Logger().Error("stock make fail..., from data: ", data)
+		Logger.Error("stock make fail..., from data: ", data)
 		return nil
 	}
 
-	Objects() <- stock
+	Objects <- stock
+	statistics.UpdateStockUpdatedAt(stock)
 
 	return stock
 }

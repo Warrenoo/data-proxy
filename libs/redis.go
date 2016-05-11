@@ -9,15 +9,12 @@ import (
 )
 
 func InitRedis() {
-	conn, err := redis.DialTimeout("tcp", RedisHost()+":"+RedisPort(), 0, 1*time.Second, 1*time.Second)
+	conn, err := redis.DialTimeout("tcp", RedisHost+":"+RedisPort, 0, 1*time.Second, 1*time.Second)
 	if err != nil {
 		panic(err)
 	}
 
-	objects := make(chan interface{}, 1024)
-
-	SetObjects(objects)
-	SetRedisConn(conn)
+	RedisConn = conn
 
 	fmt.Printf("Init Redis Ok\n")
 
@@ -26,26 +23,41 @@ func InitRedis() {
 }
 
 func redisWrite() {
+
+	ticker := time.NewTicker(60 * time.Second)
+
 	for {
 		select {
-		case o := <-Objects():
+		case o := <-Objects:
 
 			switch o.(type) {
 			case *models.Stock:
 
 				stock := o.(*models.Stock)
-				if _, err := RedisConn().Do("HMSET", redis.Args{}.Add("realtime:"+stock.Id).AddFlat(stock)...); err != nil {
-					Logger().Error("Redis Error: ", err)
-				}
+				hmset("realtime:"+stock.Id, stock)
 
+			case map[string]map[string]string:
+				for key, value := range o.(map[string]map[string]string) {
+					hmset(key, value)
+				}
 			}
 
-		case <-CloseFlag():
-			CloseFlag() <- true
+		// 每60秒写一次统计数据
+		case <-ticker.C:
+			Objects <- Statistics
 
-			RedisConn().Close()
+		case <-CloseFlag:
+			CloseFlag <- true
+
+			RedisConn.Close()
 			fmt.Printf("Redis Conn Closed!\n")
 			return
 		}
+	}
+}
+
+func hmset(key string, obj interface{}) {
+	if _, err := RedisConn.Do("HMSET", redis.Args{}.Add(key).AddFlat(obj)...); err != nil {
+		Logger.Error("Redis Error: ", err)
 	}
 }
