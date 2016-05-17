@@ -53,6 +53,9 @@ func makeRealTimeStock(data string) *models.Stock {
 		BottomPrice:     result[21],
 	}
 
+	if stock.Market == "sz" || stock.Market == "sh" {
+		stock.Symbol = stock.Symbol + "." + strings.ToUpper(stock.Market)
+	}
 	id := IdsMap[stock.Symbol]
 
 	if id != "" {
