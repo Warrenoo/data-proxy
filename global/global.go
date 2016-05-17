@@ -14,6 +14,7 @@ var (
 	WsPath         string
 	RedisHost      string
 	RedisPort      string
+	RedisPassword  string
 	HttpServerPort string
 )
 

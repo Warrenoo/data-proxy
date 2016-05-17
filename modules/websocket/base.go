@@ -26,7 +26,7 @@ func StartWebSocket(host string, path string, messages []string, listen_hook fun
 				if obj := listen_hook(data.Data()); obj == nil {
 					continue
 				} else {
-					//Logger.Info("Receive: ", obj, ", cost_time: ", time.Now().Sub(data.St()))
+					Logger.Info("Receive: ", obj, ", cost_time: ", time.Now().Sub(data.St()))
 				}
 
 			case <-CloseFlag:
