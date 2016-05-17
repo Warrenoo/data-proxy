@@ -3,32 +3,34 @@ package models
 import ()
 
 type Stock struct {
-	Channel         string `redis:"channel"`
-	Market          string `redis:"market"`
-	TradeTime       string `redis:"trade_time"`
-	Symbol          string `redis:"symbol"`
-	RealTimePrice   string `redis:"last"`
-	ChangePrice     string `redis:"change_from_previous_close"`
-	ChangePriceRate string `redis:"percent_change_from_previous_close"`
-	TodayHigh       string `redis:"high"`
-	TodayLow        string `redis:"low"`
-	Volume          string `redis:"volume"`
-	Buy1Price       string `redis:"bid_prices"`
-	Buy1Num         string `redis:"bid_sizes"`
-	Sell1Price      string `redis:"offer_prices"`
-	Sell1Num        string `redis:"offer_sizes"`
-	Week52High      string `redis:"high52_weeks"`
-	Week52Low       string `redis:"low52_weeks"`
-	Amount          string `redis:"total_value_trade"`
-	TodayOpen       string `redis:"open"`
-	LastClose       string `redis:"previous_close"`
-	Id              string `redis:"id"`
-	Naps            string `redis:"naps"`
-	Eps             string `redis:"eps"`
-	Exchange        string `redis:"exchange"`
-	Amplitude       string `redis:"amplitude"`
-	TopPrice        string `redis:"top_price"`
-	BottomPrice     string `redis:"bottom_price"`
+	Channel              string `redis:"channel"`
+	Market               string `redis:"market"`
+	TradeTime            string `redis:"trade_time"`
+	Symbol               string `redis:"symbol"`
+	RealTimePrice        string `redis:"last"`
+	ChangePrice          string `redis:"change_from_previous_close"`
+	ChangePriceRate      string `redis:"percent_change_from_previous_close"`
+	TodayHigh            string `redis:"high"`
+	TodayLow             string `redis:"low"`
+	Volume               string `redis:"volume"`
+	Buy1Price            string `redis:"bid_prices"`
+	Buy1Num              string `redis:"bid_sizes"`
+	Sell1Price           string `redis:"offer_prices"`
+	Sell1Num             string `redis:"offer_sizes"`
+	Week52High           string `redis:"high52_weeks"`
+	Week52Low            string `redis:"low52_weeks"`
+	Amount               string `redis:"total_value_trade"`
+	TodayOpen            string `redis:"open"`
+	LastClose            string `redis:"previous_close"`
+	Id                   string `redis:"id"`
+	Naps                 string `redis:"naps"`
+	Eps                  string `redis:"eps"`
+	Exchange             string `redis:"exchange"`
+	Amplitude            string `redis:"amplitude"`
+	TopPrice             string `redis:"top_price"`
+	BottomPrice          string `redis:"bottom_price"`
+	MarketCapitalization string `redis:"market_capitalization"`
+	PeRatio              string `redis:"pe_ratio"`
 }
 
 func (this *Stock) SaveFormat() *map[string]string {

@@ -11,8 +11,8 @@ import (
 func analysisBaseStock(data string) ([]string, error) {
 	str_arr := strings.Split(data, "~")
 
-	if len(str_arr) != 5 {
-		return nil, errors.New("data size must be 5\n")
+	if len(str_arr) < 7 {
+		return nil, errors.New("data size must be >= 7\n")
 	}
 
 	return str_arr, nil
@@ -26,7 +26,7 @@ func makeBaseStock(data string) *models.Stock {
 		return nil
 	}
 
-	return &models.Stock{Symbol: result[0], Id: result[1], Exchange: result[2], Naps: result[3], Eps: result[4]}
+	return &models.Stock{Symbol: result[0], Id: result[1], Exchange: result[2], Naps: result[3], Eps: result[4], MarketCapitalization: result[5], PeRatio: result[6]}
 }
 
 func BaseStockPersistence(data string) *models.Stock {
