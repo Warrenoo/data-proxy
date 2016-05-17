@@ -24,7 +24,7 @@ var (
 	Objects    = make(chan interface{}, 1024)
 	Signals    = make(chan os.Signal)
 	CloseFlag  = make(chan bool, 5)
-	Markets    = []string{"hk", "sh", "sz", "us"}
+	Markets    = []string{"hk", "cn", "us"}
 )
 
 func CloseAll() {

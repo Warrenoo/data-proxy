@@ -10,24 +10,38 @@ import (
 	"strings"
 )
 
+func market_map(m string) []string {
+	if m == "cn" {
+		return []string{"sh", "sz"}
+	} else {
+		return []string{m}
+	}
+}
+
 func InitData() {
 	for _, m := range Markets {
 		InitBaseStock(m)
-		InitRealTime(m)
+
+		for _, mc := range market_map(m) {
+			InitRealTime(mc)
+		}
 	}
 }
 
 func InitDataByMarkets(markets []string) {
 	for _, m := range markets {
 		InitBaseStock(m)
-		InitRealTime(m)
+
+		for _, mc := range market_map(m) {
+			InitRealTime(mc)
+		}
 	}
 }
 
 func InitRealTime(market string) {
 	Logger.Info("Init RealTime " + market + " Begin!!")
 	fmt.Printf("Init RealTime %s...\n", market)
-	response_body := httpPost("http://d.caishuo.com:6090/websocket", "text/plain; charset=UTF-8", "{'channel':'9', 'market':'"+market+"'}")
+	response_body := httpPost("http://d.caishuo.com/websocket", "text/plain; charset=UTF-8", "{'channel':'9', 'market':'"+market+"'}")
 
 	s := []string{}
 	parseJson([]byte(response_body), &s)
