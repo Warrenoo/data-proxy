@@ -58,8 +58,8 @@ func makeRealTimeStock(data string) *models.Stock {
 	if id != "" {
 		stock.Id = id
 	} else {
-		//return nil
-		stock.Id = stock.Symbol
+		return nil
+		//stock.Id = stock.Symbol
 	}
 
 	return &stock
