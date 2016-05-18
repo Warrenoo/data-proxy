@@ -15,7 +15,7 @@ func StartRealtime() {
 	messages := make([]string, len(Markets))
 
 	for i, m := range Markets {
-		messages[i] = "{'isSubscribe':true,'market':'" + m + "','stock_code':'','channel':'9'}"
+		messages[i] = "{'isSubscribe':true,'market':'" + m + "','stock_code':'','channel':'9','token':'" + WsToken + "','random':'" + WsRandom + "'}"
 	}
 
 	StartWebSocket(WsHost, WsPath, messages, realTimeHook)

@@ -12,6 +12,8 @@ var (
 	LogFile        *os.File
 	WsHost         string
 	WsPath         string
+	WsToken        string
+	WsRandom       string
 	RedisHost      string
 	RedisPort      string
 	RedisPassword  string

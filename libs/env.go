@@ -7,11 +7,13 @@ import (
 )
 
 func GetEnv() {
-	ws_host, ws_path, redis_host, redis_port, redis_password, http_server_port := os.Getenv("DC_WS_HOST"), os.Getenv("DC_WS_PATH"), os.Getenv("DC_REDIS_HOST"), os.Getenv("DC_REDIS_PORT"), os.Getenv("DC_REDIS_PASSWORD"), os.Getenv("DC_HTTP_SERVER_PORT")
-	ws_host_tmp, ws_path_tmp, redis_host_tmp, redis_port_tmp, redis_password_tmp, http_server_port_tmp := ParseCommond()
+	ws_host, ws_path, ws_token, ws_random, redis_host, redis_port, redis_password, http_server_port := os.Getenv("DC_WS_HOST"), os.Getenv("DC_WS_PATH"), os.Getenv("DC_WS_TOKEN"), os.Getenv("DC_WS_RANDOM"), os.Getenv("DC_REDIS_HOST"), os.Getenv("DC_REDIS_PORT"), os.Getenv("DC_REDIS_PASSWORD"), os.Getenv("DC_HTTP_SERVER_PORT")
+	ws_host_tmp, ws_path_tmp, ws_token_tmp, ws_random_tmp, redis_host_tmp, redis_port_tmp, redis_password_tmp, http_server_port_tmp := ParseCommond()
 
 	WsHost = andEqual(ws_host, ws_host_tmp)
 	WsPath = andEqual(ws_path, ws_path_tmp)
+	WsToken = andEqual(ws_token, ws_token_tmp)
+	WsRandom = andEqual(ws_random, ws_random_tmp)
 	RedisHost = andEqual(redis_host, redis_host_tmp)
 	RedisPort = andEqual(redis_port, redis_port_tmp)
 	RedisPassword = andEqual(redis_password, redis_password_tmp)
