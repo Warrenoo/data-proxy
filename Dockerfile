@@ -24,7 +24,7 @@ ADD pkg /
 #------------------------------------------------------------------------------
 # Expose ports and entrypoint:
 #------------------------------------------------------------------------------
-EXPOSE 8080
+EXPOSE 8000
 
 # ENTRYPOINT ["/usr/sbin/privoxy", "--no-daemon", "/etc/privoxy/config"]
 ENTRYPOINT ["/go-data-client"]
