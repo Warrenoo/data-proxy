@@ -20,7 +20,7 @@ func analysisRealTimeStock(data string) ([]string, error) {
 	return str_arr, nil
 }
 
-func makeRealTimeStock(data string) *models.Stock {
+func makeRealTimeStock(data string) *models.RealTimeStock {
 	result, err := analysisRealTimeStock(data)
 
 	if err != nil {
@@ -28,7 +28,7 @@ func makeRealTimeStock(data string) *models.Stock {
 		return nil
 	}
 
-	stock := models.Stock{
+	stock := models.RealTimeStock{
 		Channel:         result[0],
 		Market:          result[1],
 		TradeTime:       result[2],
@@ -68,7 +68,7 @@ func makeRealTimeStock(data string) *models.Stock {
 	return &stock
 }
 
-func RealTimeStockPersistence(data string) *models.Stock {
+func RealTimeStockPersistence(data string) *models.RealTimeStock {
 	stock := makeRealTimeStock(data)
 
 	if stock == nil {

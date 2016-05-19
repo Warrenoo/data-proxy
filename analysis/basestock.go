@@ -4,7 +4,6 @@ import (
 	"errors"
 	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"gitlab.caishuo.com/ruby/go-data-client/models"
-	"gitlab.caishuo.com/ruby/go-data-client/statistics"
 	"strings"
 )
 
@@ -18,7 +17,7 @@ func analysisBaseStock(data string) ([]string, error) {
 	return str_arr, nil
 }
 
-func makeBaseStock(data string) *models.Stock {
+func makeBaseStock(data string) *models.BaseStock {
 	result, err := analysisBaseStock(data)
 
 	if err != nil {
@@ -26,10 +25,10 @@ func makeBaseStock(data string) *models.Stock {
 		return nil
 	}
 
-	return &models.Stock{Symbol: result[0], Id: result[1], Exchange: result[2], Naps: result[3], Eps: result[4], MarketCapitalization: result[5], PeRatio: result[6]}
+	return &models.BaseStock{Symbol: result[0], Id: result[1], Exchange: result[2], Naps: result[3], Eps: result[4], MarketCapitalization: result[5], PeRatio: result[6]}
 }
 
-func BaseStockPersistence(data string) *models.Stock {
+func BaseStockPersistence(data string) *models.BaseStock {
 	stock := makeBaseStock(data)
 
 	mapSymbolAndId(stock)
@@ -40,11 +39,10 @@ func BaseStockPersistence(data string) *models.Stock {
 	}
 
 	Objects <- stock
-	statistics.UpdateStockUpdatedAt(stock)
 
 	return stock
 }
 
-func mapSymbolAndId(stock *models.Stock) {
+func mapSymbolAndId(stock *models.BaseStock) {
 	IdsMap[stock.Symbol] = stock.Id
 }

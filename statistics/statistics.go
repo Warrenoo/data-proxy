@@ -18,7 +18,7 @@ func InitStatistics() {
 
 }
 
-func UpdateStockUpdatedAt(stock *models.Stock) {
+func UpdateStockUpdatedAt(stock *models.RealTimeStock) {
 	if stock.Market != "" {
 		Statistics["realtime:markets:updated_at"][stock.Market] = strconv.FormatInt(time.Now().Unix(), 10)
 	}

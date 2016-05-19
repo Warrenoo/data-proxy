@@ -32,9 +32,14 @@ func redisWrite() {
 		case o := <-Objects:
 
 			switch o.(type) {
-			case *models.Stock:
+			case *models.BaseStock:
 
-				stock := o.(*models.Stock)
+				stock := o.(*models.BaseStock)
+				hmset("realtime:"+stock.Id, stock)
+
+			case *models.RealTimeStock:
+
+				stock := o.(*models.RealTimeStock)
 				hmset("realtime:"+stock.Id, stock)
 
 			case map[string]map[string]string:
