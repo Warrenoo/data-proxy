@@ -1,0 +1,62 @@
+# See docs/examples here:
+# http://doc.gitlab.com/ce/ci/quick_start/README.html
+# http://doc.gitlab.com/ce/ci/yaml/README.html
+
+# GitLab CI template for Go tests. Note this installs
+# a new working copy of Go (1.5.2 in this case)
+# in a non-standard path such that sudo/root is not
+# needed for the install stage.
+
+# note that this particular install-environment stage
+# is overly verbose in order to debug anything tricky
+# or weird in your environment - feel free to trim it
+# down as needed
+image: hub.caishuo.com/gitlab-runner-golang:latest
+
+cache:
+  key: "$CI_PROJECT_DIR/v1"
+  paths:
+  - gopath
+
+before_script:
+  - export GITLAB_URL=https://gitlab.caishuo.com/ GIL_URL=ssh://git@gitlab.caishuo.com:10022/
+  - export PROJECT_NAME=${CI_PROJECT_DIR#/builds/*}
+  - export GOPATH=$PWD/gopath
+  - git config --global url."$GIL_URL".insteadOf "$GITLAB_URL"
+  - mkdir -p $GOPATH/src/gitlab.caishuo.com/ruby && rm -f $GOPATH/src/gitlab.caishuo.com/$PROJECT_NAME && ln -sf $CI_PROJECT_DIR $GOPATH/src/gitlab.caishuo.com/$PROJECT_NAME
+
+stages:
+  - setup
+  - test
+  - build
+  - deploy
+
+setup:
+  stage: setup
+  script:
+    - https_proxy=http://192.168.1.10:8118 http_proxy=http://192.168.1.10:8118 go get -v -d -t
+  tags:
+    - golang
+
+test:
+  stage: test
+  script:
+    - go test
+  tags:
+    - golang
+
+build:linux:
+  stage: build
+  script:
+    - go build
+  tags:
+    - golang
+
+deploy:
+  stage: deploy
+  script:
+    - echo "deploy todo"
+  only:
+    - master
+  tags:
+    - golang
