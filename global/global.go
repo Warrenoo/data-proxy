@@ -17,7 +17,9 @@ var (
 	RedisHost      string
 	RedisPort      string
 	RedisPassword  string
+	RedisDatabase  int
 	HttpServerPort string
+	LogLevel       string
 )
 
 var (

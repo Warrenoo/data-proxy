@@ -12,7 +12,7 @@ import (
 
 func info(c web.C, w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "GO Data CLIENT running......(pid: %d)\n", syscall.Getpid())
-	fmt.Fprintf(w, "Commands: ws_host=%s, ws_path=%s, redis_host=%s, redis_port=%s, http_server_port=%s\n", WsHost, WsPath, RedisHost, RedisPort, HttpServerPort)
+	fmt.Fprintf(w, "Commands: ws_host=%s, ws_path=%s, redis_host=%s, redis_port=%s, redis_database=%d, http_server_port=%s, log_level=%s\n", WsHost, WsPath, RedisHost, RedisPort, RedisDatabase, HttpServerPort, LogLevel)
 
 	fmt.Fprintf(w, "-------------------统计数据------------------\n")
 	for key, value := range Statistics {
