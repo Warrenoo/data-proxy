@@ -5,7 +5,7 @@ MAINTAINER shenwangyang <shenwangyang@caishuo.com>
 # Environment variables:
 #------------------------------------------------------------------------------
 
-ENV DC_WS_HOST="d.caishuo.com " \
+ENV DC_WS_HOST="d.caishuo.com" \
     DC_WS_PATH="/websocket" \
     DC_WS_TOKEN="" \
     DC_WS_RANDOM="" \
