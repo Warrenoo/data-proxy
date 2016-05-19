@@ -6,9 +6,20 @@ import (
 	"github.com/Sirupsen/logrus/formatters/logstash"
 	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"os"
+	"strings"
 )
 
 func InitLog() {
+
+	level_map := map[string]logrus.Level{
+		"debug": logrus.DebugLevel,
+		"info":  logrus.InfoLevel,
+		"warn":  logrus.WarnLevel,
+		"error": logrus.ErrorLevel,
+		"fatal": logrus.FatalLevel,
+		"panic": logrus.PanicLevel,
+	}
+
 	log := logrus.New()
 
 	if f, err := os.OpenFile("go-data-client.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666); err != nil {
@@ -21,7 +32,7 @@ func InitLog() {
 		LogFile = f
 	}
 
-	log.Level = logrus.InfoLevel
+	log.Level = level_map[strings.ToLower(LogLevel)]
 
 	// 输出logstash格式
 	// 通过hook可以直接发送到logstash服务

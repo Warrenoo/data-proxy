@@ -9,7 +9,7 @@ import (
 )
 
 func InitRedis() {
-	conn, err := redis.Dial("tcp", RedisHost+":"+RedisPort, redis.DialConnectTimeout(0), redis.DialReadTimeout(1*time.Second), redis.DialWriteTimeout(1*time.Second), redis.DialPassword(RedisPassword))
+	conn, err := redis.Dial("tcp", RedisHost+":"+RedisPort, redis.DialConnectTimeout(0), redis.DialReadTimeout(1*time.Second), redis.DialWriteTimeout(1*time.Second), redis.DialPassword(RedisPassword), redis.DialDatabase(RedisDatabase))
 
 	if err != nil {
 		panic(err)
