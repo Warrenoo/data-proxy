@@ -1,8 +1,8 @@
 package websocket
 
 import (
-	"gitlab.caishuo.com/ruby/go-data-client/analysis"
-	. "gitlab.caishuo.com/ruby/go-data-client/global"
+	"github.com/warrenoo/data-prox/analysis"
+	. "github.com/warrenoo/data-prox/global"
 )
 
 func realTimeHook(data string) interface{} {
