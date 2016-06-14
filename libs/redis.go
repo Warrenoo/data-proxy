@@ -3,8 +3,8 @@ package libs
 import (
 	"fmt"
 	"github.com/garyburd/redigo/redis"
-	. "gitlab.caishuo.com/ruby/go-data-client/global"
-	"gitlab.caishuo.com/ruby/go-data-client/models"
+	. "github.com/warrenoo/data-proxy/global"
+	"github.com/warrenoo/data-proxy/models"
 	"time"
 )
 

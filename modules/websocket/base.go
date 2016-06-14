@@ -2,8 +2,8 @@ package websocket
 
 import (
 	"fmt"
+	. "github.com/warrenoo/data-proxy/global"
 	"github.com/warrenoo/getter"
-	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"time"
 )
 

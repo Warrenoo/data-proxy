@@ -2,9 +2,9 @@ package http
 
 import (
 	"fmt"
+	. "github.com/warrenoo/data-proxy/global"
 	"github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
-	. "gitlab.caishuo.com/ruby/go-data-client/global"
 	"net/http"
 	"os"
 	"syscall"

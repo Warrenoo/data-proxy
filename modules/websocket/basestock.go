@@ -1,8 +1,8 @@
 package websocket
 
 import (
-	"gitlab.caishuo.com/ruby/go-data-client/analysis"
-	. "gitlab.caishuo.com/ruby/go-data-client/global"
+	"github.com/warrenoo/data-proxy/analysis"
+	. "github.com/warrenoo/data-proxy/global"
 )
 
 func baseStockHook(data string) interface{} {

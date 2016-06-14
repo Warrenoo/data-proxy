@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/Sirupsen/logrus"
 	"github.com/Sirupsen/logrus/formatters/logstash"
-	. "gitlab.caishuo.com/ruby/go-data-client/global"
+	. "github.com/warrenoo/data-proxy/global"
 	"os"
 	"strings"
 )

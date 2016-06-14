@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	. "gitlab.caishuo.com/ruby/go-data-client/libs"
-	. "gitlab.caishuo.com/ruby/go-data-client/modules/http"
-	. "gitlab.caishuo.com/ruby/go-data-client/modules/websocket"
-	. "gitlab.caishuo.com/ruby/go-data-client/statistics"
+	. "github.com/warrenoo/data-proxy/libs"
+	. "github.com/warrenoo/data-proxy/modules/http"
+	. "github.com/warrenoo/data-proxy/modules/websocket"
+	. "github.com/warrenoo/data-proxy/statistics"
 )
 
 func initConfig() {

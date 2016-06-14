@@ -2,7 +2,7 @@ package libs
 
 import (
 	"fmt"
-	. "gitlab.caishuo.com/ruby/go-data-client/global"
+	. "github.com/warrenoo/data-proxy/global"
 	"os/signal"
 	"syscall"
 	"time"

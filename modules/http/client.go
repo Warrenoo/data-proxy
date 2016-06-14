@@ -3,8 +3,8 @@ package http
 import (
 	"encoding/json"
 	"fmt"
-	"gitlab.caishuo.com/ruby/go-data-client/analysis"
-	. "gitlab.caishuo.com/ruby/go-data-client/global"
+	"github.com/warrenoo/data-proxy/analysis"
+	. "github.com/warrenoo/data-proxy/global"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -41,7 +41,7 @@ func InitDataByMarkets(markets []string) {
 func InitRealTime(market string) {
 	Logger.Info("Init RealTime " + market + " Begin!!")
 	fmt.Printf("Init RealTime %s...\n", market)
-	response_body := httpPost("http://d.caishuo.com/websocket", "text/plain; charset=UTF-8", "{'channel':'9', 'market':'"+market+"'}")
+	response_body := httpPost("http://d.xxxx.com/websocket", "text/plain; charset=UTF-8", "{'channel':'9', 'market':'"+market+"'}")
 
 	s := []string{}
 	parseJson([]byte(response_body), &s)
@@ -57,7 +57,7 @@ func InitRealTime(market string) {
 func InitBaseStock(market string) {
 	Logger.Info("Init BaseStock " + market + " Begin!!")
 	fmt.Printf("Init BaseStock %s...\n", market)
-	response_body := httpGet("http://d.caishuo.com/fundament.json?market=" + market)
+	response_body := httpGet("http://d.xxxx.com/fundament.json?market=" + market)
 
 	s := []string{}
 	parseJson([]byte(response_body), &s)
